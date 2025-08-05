@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Mayorista - SelectStyle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_mayorista.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="logo">SelectStyle</h1>
+            <h2>Acceso Mayorista</h2>
+            <form method="POST" action="{{ url_for('login_mayorista') }}">
+                <div class="form-group">
+                    <label for="username">Usuario o Correo</label>
+                    <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                </div>
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
+            </form>
+            <p class="forgot"><a href="#">¿Olvidaste tu contraseña?</a></p>
+        </div>
+    </div>
+</body>
+</html>
+

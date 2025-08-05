@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>SelectStyle - Polos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Carrito lateral -->
+<div id="cart" class="cart">
+  <div class="cart-header">
+    <h3>Carrito</h3>
+    <button id="cart-close">&times;</button>
+  </div>
+  <div id="cart-items" class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total:</span> <strong id="cart-total-amount">$0.00</strong>
+    </div>
+    <button id="checkout-btn" class="btn-primary">Pagar</button>
+    <button id="clear-cart" class="btn-secondary">Vaciar carrito</button>
+  </div>
+</div>
+
+<!-- Botón flotante para ver carrito -->
+<button id="cart-toggle" class="cart-toggle">🛒 <span id="cart-count">0</span></button>
+
+  <header class="site-header">
+    <div class="logo">SelectStyle</div>
+    <nav class="nav">
+      <a href="#">Hombre</a>
+      <a href="#">Mujer</a>
+      <a href="/login/admin">Administrador</a>
+      <a href="/login/wholesaler">Mayorista</a>
+    </nav>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar polos..." id="searchInput">
+    </div>
+  </header>
+
+  <div class="page-content">
+    <aside class="filters">
+      <div class="filter-group">
+        <h4>Ordenar por</h4>
+        <select id="sortSelect">
+          <option value="default">Nuestra selección</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <h4>Colores</h4>
+        <div class="colors">
+          <button class="color-btn" data-color="">Todos</button>
+          <button class="color-btn" data-color="blanco" style="background:#fff;border:1px solid #ccc;"></button>
+          <button class="color-btn" data-color="negro" style="background:#222;"></button>
+          <button class="color-btn" data-color="rojo" style="background:#d32f2f;"></button>
+          <button class="color-btn" data-color="azul" style="background:#1976d2;"></button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="products-container" id="productList">
+      <!-- cards se inyectan por JS -->
+    </main>
+  </div>
+
+  <template id="product-card-template">
+  <div class="product-card">
+    <div class="image-wrapper">
+      <img src="" alt="Polo">
+      <div class="badge discount"></div>
+      <div class="badge sold-out-label">AGOTADO</div>
+    </div>
+    <div class="info">
+      <h3 class="name"></h3>
+      <div class="price-wrapper">
+        <span class="price-current"></span>
+        <span class="price-old"></span>
+      </div>
+      <div class="card-actions">
+        <button class="buy-btn">Comprar</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
