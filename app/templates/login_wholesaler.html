@@ -11,7 +11,7 @@
         <div class="login-box">
             <h1 class="logo">SelectStyle</h1>
             <h2>Acceso Mayorista</h2>
-            <form method="POST" action="{{ url_for('login_mayorista') }}">
+            <form method="POST" action="{{ url_for('login', role='wholesaler') }}">
                 <div class="form-group">
                     <label for="username">Usuario o Correo</label>
                     <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
@@ -22,6 +22,9 @@
                 </div>
                 <button type="submit" class="btn-login">Iniciar Sesión</button>
             </form>
+            <p class="forgot">
+    <a href="{{ url_for('register_mayorista') }}">¿No tienes cuenta? Regístrate</a>
+</p>
             <p class="forgot"><a href="#">¿Olvidaste tu contraseña?</a></p>
         </div>
     </div>

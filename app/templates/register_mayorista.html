@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro Mayorista - SelectStyle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_mayorista.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="logo">SelectStyle</h1>
+            <h2>Registro Mayorista</h2>
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+            <form method="POST" action="{{ url_for('register_mayorista') }}">
+                <div class="form-group">
+                    <label for="username">Usuario o Correo</label>
+                    <input type="text" id="username" name="username" placeholder="Crea tu usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Crea tu contraseña" required>
+                </div>
+                <button type="submit" class="btn-login">Registrarse</button>
+            </form>
+            <p class="forgot"><a href="{{ url_for('login', role='wholesaler') }}">¿Ya tienes cuenta? Inicia sesión</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Mayorista - SelectStyle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">SelectStyle Mayorista</div>
+        <nav class="nav">
+            <a href="/">Inicio</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <div class="page-content">
+        <h2>Bienvenido {{ session['mayorista'] }}</h2>
+        <p>Aquí puedes ver los productos disponibles para compra al por mayor.</p>
+
+        <div class="products-container">
+            {% for shirt in shirts %}
+                <div class="product-card {% if shirt[4] %}sold-out{% endif %}">
+                    <div class="image-wrapper">
+                        <img src="{{ url_for('static', filename='uploads/' + shirt[3]) }}" alt="{{ shirt[1] }}">
+                        {% if shirt[4] %}
+                            <div class="badge sold-out-label">AGOTADO</div>
+                        {% endif %}
+                    </div>
+                    <div class="info">
+                        <h3 class="name">{{ shirt[1] }}</h3>
+                        <div class="price-wrapper">
+                            <span class="price-current">${{ shirt[2] }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

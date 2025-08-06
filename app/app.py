@@ -4,15 +4,18 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'secretkey123'
-UPLOAD_FOLDER = 'static/uploads'  # ruta relativa dentro de flask
+UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 def get_db_connection():
     return psycopg2.connect(host='db', database='selectstyle', user='postgres', password='postgres')
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/products')
 def products():
@@ -27,27 +30,64 @@ def products():
     conn.close()
     return jsonify(products)
 
+
+# ---------- LOGIN Y REGISTRO ----------
 @app.route('/login/<role>', methods=['GET', 'POST'])
 def login(role):
     error = None
     if request.method == 'POST':
         user = request.form['username']
         pwd = request.form['password']
+
         if role == 'admin' and user == 'admin' and pwd == 'admin123':
             session['user'] = user
             return redirect(url_for('admin_panel'))
-        elif role == 'wholesaler' and user == 'mayorista' and pwd == 'mayor123':
-            session['user'] = user
-            return f"<h1>Bienvenido, {user.title()} ({role.title()})</h1>"
+
+        elif role == 'wholesaler':
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM mayoristas WHERE username=%s AND password=%s", (user, pwd))
+            mayorista = cur.fetchone()
+            cur.close()
+            conn.close()
+            if mayorista:
+                session['mayorista'] = user
+                return redirect(url_for('pagina_mayoristas'))
+            else:
+                error = "Usuario o contraseña incorrectos"
+
         else:
             error = "Credenciales incorrectas"
-    return render_template('login.html', role=role.title(), error=error)
+
+    return render_template(f'login_{role}.html', error=error)
+
+
+@app.route('/register_wholesaler', methods=['GET', 'POST'])
+def register_wholesaler():
+    message = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO mayoristas (username, password) VALUES (%s, %s)", (username, password))
+        conn.commit()
+        cur.close()
+        conn.close()
+        message = "Usuario registrado correctamente. Ahora puedes iniciar sesión."
+        return redirect(url_for('login', role='wholesaler'))
+
+    return render_template('register_wholesaler.html', message=message)
+
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.clear()
     return redirect(url_for('index'))
 
+
+# ---------- PANEL DE ADMIN ----------
 @app.route('/admin/panel', methods=['GET', 'POST'])
 def admin_panel():
     if session.get('user') != 'admin':
@@ -73,6 +113,7 @@ def admin_panel():
     conn.close()
     return render_template('admin_panel.html', shirts=shirts)
 
+
 @app.route('/admin/toggle/<int:shirt_id>')
 def toggle_sold_out(shirt_id):
     if session.get('user') != 'admin':
@@ -84,6 +125,7 @@ def toggle_sold_out(shirt_id):
     cur.close()
     conn.close()
     return redirect(url_for('admin_panel'))
+
 
 @app.route('/admin/delete/<int:shirt_id>')
 def delete_shirt(shirt_id):
@@ -98,43 +140,30 @@ def delete_shirt(shirt_id):
     return redirect(url_for('admin_panel'))
 
 
+# ---------- PANEL DE MAYORISTAS ----------
+@app.route('/mayoristas')
+def pagina_mayoristas():
+    if 'mayorista' not in session:
+        return redirect(url_for('login', role='wholesaler'))
+    return render_template('pagina_mayoristas.html')
 
-from flask import Flask, render_template, request, redirect, url_for, session
-import psycopg2
 
-@app.route('/login_mayorista', methods=['GET', 'POST'])
-def login_mayorista():
+@app.route('/register_mayorista', methods=['GET', 'POST'])
+def register_mayorista():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        conn = psycopg2.connect(
-            host="db",
-            database="selectstyle",
-            user="postgres",
-            password="postgres"
-        )
+        conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM mayoristas WHERE username=%s AND password=%s", (username, password))
-        user = cur.fetchone()
+        cur.execute("INSERT INTO mayoristas (username, password) VALUES (%s, %s)", (username, password))
+        conn.commit()
         cur.close()
         conn.close()
 
-        if user:
-            session['mayorista'] = username
-            return redirect(url_for('pagina_mayoristas'))
-        else:
-            return "Usuario o contraseña incorrectos"
+        return redirect(url_for('login', role='wholesaler'))
 
-    return render_template('login_mayorista.html')
-
-
-@app.route('/mayoristas')
-def pagina_mayoristas():
-    if 'mayorista' not in session:
-        return redirect(url_for('login_mayorista'))
-    return "<h1>Bienvenido Mayorista</h1>"
-
+    return render_template('register_wholesaler.html')
 
 
 

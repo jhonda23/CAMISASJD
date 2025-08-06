@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Mayorista - SelectStyle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">SelectStyle Mayoristas</div>
+        <nav class="nav">
+            <a href="/">Inicio</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+    <main class="page-content">
+        <h2>Compra por Paquetes de 12 Camisas con Descuento</h2>
+        <div class="products-container">
+            <!-- Aquí puedes listar los paquetes con descuento -->
+            <div class="product-card">
+                <h3>Paquete 12 Camisas Lacoste</h3>
+                <p>Precio con descuento: $1.200.000</p>
+                <button class="buy-btn">Comprar Paquete</button>
+            </div>
+            <!-- Repite con bucles desde la base de datos -->
+        </div>
+    </main>
+</body>
+</html>
