@@ -16,14 +16,19 @@
     <main class="page-content">
         <h2>Compra por Paquetes de 12 Camisas con Descuento</h2>
         <div class="products-container">
-            <!-- Aquí puedes listar los paquetes con descuento -->
-            <div class="product-card">
-                <h3>Paquete 12 Camisas Lacoste</h3>
-                <p>Precio con descuento: $1.200.000</p>
-                <button class="buy-btn">Comprar Paquete</button>
-            </div>
-            <!-- Repite con bucles desde la base de datos -->
+            {% for paquete in paquetes %}
+                <div class="product-card">
+                    <img src="{{ url_for('static', filename=paquete[5]) }}" alt="Imagen del paquete" width="200">
+                    <h3>{{ paquete[1] }}</h3>
+                    <p>Cantidad: {{ paquete[2] }} camisas</p>
+                    <p>Colores: {{ paquete[4] }}</p>
+                    <p>Precio: ${{ paquete[3] }}</p>
+                    <button class="buy-btn">Comprar Paquete</button>
+                </div>
+            {% endfor %}
         </div>
     </main>
+    <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
+<script>
 </body>
 </html>

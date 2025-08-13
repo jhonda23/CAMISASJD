@@ -204,3 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
     clearCart();
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const botonesComprarPaquete = document.querySelectorAll(".comprar-paquete");
+    botonesComprarPaquete.forEach(boton => {
+        boton.addEventListener("click", function () {
+            const id = this.dataset.id;
+            const nombre = this.dataset.nombre;
+            const precio = parseFloat(this.dataset.precio);
+            agregarAlCarrito(id, nombre, precio);
+        });
+    });
+});

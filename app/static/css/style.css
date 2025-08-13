@@ -278,3 +278,20 @@ body {
   cursor:pointer;
   margin-top:4px;
 }
+.paquete-card.agotado,
+.product-card.agotado {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+.badge.sold-out-label {
+  background: #c62828;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+

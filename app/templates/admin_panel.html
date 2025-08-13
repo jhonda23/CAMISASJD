@@ -58,6 +58,64 @@
         </div>
         <button type="submit">Subir</button>
       </form>
+      <!-- - - - FORMULARIO: AGREGAR PAQUETE MAYORISTA - - - -->
+<section class="admin-paquetes">
+  <h2>Agregar paquete mayorista</h2>
+  <form action="{{ url_for('add_paquete') }}" method="post" enctype="multipart/form-data">
+    <div>
+      <input type="text" name="nombre" placeholder="Nombre del paquete (ej. Paq 12 Lacoste)" required>
+    </div>
+    <div>
+      <input type="text" name="descripcion" placeholder="Descripción (opcional)">
+    </div>
+    <div>
+      <select name="cantidad" required>
+        <option value="12">12 unidades</option>
+        <option value="24">24 unidades</option>
+        <option value="32">32 unidades</option>
+      </select>
+    </div>
+    <div>
+      <input type="number" name="precio" placeholder="Precio total (ej. 1200000)" required>
+    </div>
+    <div>
+      <input type="file" name="imagen" accept="image/*">
+    </div>
+    <button type="submit">Subir paquete</button>
+  </form>
+
+  <h3>Paquetes existentes</h3>
+  <div class="paquetes-list">
+    {% if paquetes %}
+      {% for p in paquetes %}
+        {# p = (id, nombre, descripcion, precio, imagen, cantidad, agotado) #}
+        <div class="paquete-card {% if p[6] %}agotado{% endif %}">
+          {% if p[4] %}
+            <img src="{{ url_for('static', filename='uploads/' + p[4]) }}" alt="{{ p[1] }}" width="140">
+          {% endif %}
+          <div class="paquete-info">
+            <strong>{{ p[1] }}</strong><br>
+            <small>{{ p[2] }}</small><br>
+            Cantidad: {{ p[5] }} — Precio: ${{ p[3] }}<br>
+            <form action="{{ url_for('delete_paquete', paquete_id=p[0]) }}" method="post" style="display:inline;">
+              <button type="submit">Eliminar</button>
+            </form>
+            <form action="{{ url_for('toggle_paquete', paquete_id=p[0]) }}" method="post" style="display:inline;">
+              {% if p[6] %}
+                <button type="submit">Marcar disponible</button>
+              {% else %}
+                <button type="submit">Marcar agotado</button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No hay paquetes todavía.</p>
+    {% endif %}
+  </div>
+</section>
+
     </section>
   </div>
 </body>
